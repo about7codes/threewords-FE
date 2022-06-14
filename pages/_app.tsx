@@ -1,8 +1,25 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import React from "react";
+import type { AppProps } from "next/app";
+import { QueryClientProvider, Hydrate, QueryClient } from "react-query";
+
+import "../styles/globals.css";
+import Layout from "../components/Layout";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  const queryClient = React.useRef(new QueryClient());
+  return (
+    <QueryClientProvider client={queryClient.current}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <ThemeProvider theme={theme}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ThemeProvider>
+      </Hydrate>
+    </QueryClientProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;
