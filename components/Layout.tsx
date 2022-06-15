@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 import {
   CssBaseline,
   Container,
@@ -15,13 +16,16 @@ interface ILayoutProps {
   children: React.ReactNode;
 }
 
-export const drawerWidth = 240;
+const drawerWidth = 240;
 
 const Layout = ({ children }: ILayoutProps) => {
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const handleDrawerToggle = () => {
+  const handleDrawerToggle = (path?: string) => {
     setMobileOpen(!mobileOpen);
+
+    if (path) router.push(path);
   };
 
   return (
@@ -31,8 +35,9 @@ const Layout = ({ children }: ILayoutProps) => {
         <AppBar
           position="fixed"
           sx={{
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            width: { sm: `calc(100% - ${0}px)` },
             ml: { sm: `${drawerWidth}px` },
+            zIndex: 99999,
           }}
         >
           <Toolbar>
@@ -40,18 +45,31 @@ const Layout = ({ children }: ILayoutProps) => {
               color="inherit"
               aria-label="open drawer"
               edge="start"
-              onClick={handleDrawerToggle}
+              onClick={() => handleDrawerToggle()}
               sx={{ mr: 2, display: { sm: "none" } }}
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap component="div">
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                textTransform: "uppercase",
+                fontWeight: "bold",
+                fontSize: "24px",
+              }}
+            >
               Threemax
             </Typography>
           </Toolbar>
         </AppBar>
         {/* Responsive app sidebar */}
-        <SideBar barToggle={handleDrawerToggle} mobileOpen={mobileOpen} />
+        <SideBar
+          barToggle={handleDrawerToggle}
+          drawerWidth={drawerWidth}
+          mobileOpen={mobileOpen}
+        />
         <Box
           component="main"
           sx={{
@@ -62,7 +80,6 @@ const Layout = ({ children }: ILayoutProps) => {
           }}
         >
           <Toolbar />
-          <h1>Threemax</h1>
           {children}
         </Box>
       </Box>

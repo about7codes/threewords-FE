@@ -12,19 +12,42 @@ import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { useRouter } from "next/router";
 
-const drawerWidth = 240;
+const appRoutes = [
+  {
+    name: "All Phrases",
+    icon: <InboxIcon />,
+    href: "/all",
+  },
+  {
+    name: "Create Phrase",
+    icon: <InboxIcon />,
+    href: "/create",
+  },
+  {
+    name: "Profile",
+    icon: <InboxIcon />,
+    href: "/profile",
+  },
+  {
+    name: "About",
+    icon: <InboxIcon />,
+    href: "/about",
+  },
+];
 
 interface ISideBarProps {
-  barToggle: () => void;
+  barToggle: (path: string) => void;
   mobileOpen: boolean;
+  drawerWidth: number;
 }
 
-const SideBar = ({ barToggle, mobileOpen }: ISideBarProps) => {
-  // const { window } = props;
-
+const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
+  const router = useRouter();
   const drawer = (
     <div>
+      <Toolbar />
       <Box className="sidebar-logo">
         <Image
           src="/trianglex.png"
@@ -36,24 +59,20 @@ const SideBar = ({ barToggle, mobileOpen }: ISideBarProps) => {
       </Box>
       <Divider />
       <List>
-        {["All Phrases", "Create Phrase", "Profile", "About"].map(
-          (text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          )
-        )}
+        {appRoutes.map((item) => (
+          <ListItem key={item.href} disablePadding>
+            <ListItemButton onClick={() => barToggle(item.href)}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
       <Divider />
       <List>
         {["Logout", "Spam"].map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => router.push("/login")}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
@@ -71,8 +90,9 @@ const SideBar = ({ barToggle, mobileOpen }: ISideBarProps) => {
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
+        aria-label="app sidebar"
       >
+        {/* Mobile nav */}
         <Drawer
           //   container={container}
           variant="temporary"
@@ -81,6 +101,7 @@ const SideBar = ({ barToggle, mobileOpen }: ISideBarProps) => {
           ModalProps={{
             keepMounted: true,
           }}
+          className="sidebar-drawer"
           sx={{
             display: { xs: "block", sm: "none" },
             "& .MuiDrawer-paper": {
@@ -91,6 +112,7 @@ const SideBar = ({ barToggle, mobileOpen }: ISideBarProps) => {
         >
           {drawer}
         </Drawer>
+        {/* Desktop nav */}
         <Drawer
           variant="permanent"
           sx={{

@@ -1,7 +1,12 @@
 import React from "react";
 
 const AllPhrases = () => {
-  return <div>AllPhrases</div>;
+  return (
+    <div>
+      <h1>All Phrases Threemax</h1>
+      AllPhrases
+    </div>
+  );
 };
 
 export default AllPhrases;
