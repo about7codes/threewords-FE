@@ -5,6 +5,12 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
+body {
+  background-color: #fff4f4;
+  background-image: radial-gradient(#ff0000 0.5px, #fff4f4 0.5px);
+  background-size: 10px 10px;
+}
+
 
 a {
   color: inherit;

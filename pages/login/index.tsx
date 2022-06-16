@@ -13,30 +13,50 @@ import {
   IconButton,
   Link as MuiLink,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Lock from "@mui/icons-material/Lock";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useFormik, FormikProps } from "formik";
+import * as Yup from "yup";
 
 import { styles as classes } from "./login.styles";
+import { useLogin } from "../../hooks/auth.hooks";
 // import { isAuthenticated } from "../../auth";
 
+interface IFormValues {
+  email: string;
+  password: string;
+}
+
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  // const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if(isAuthenticated()) navigate("/account");
-  // }, [navigate]);
+  const { mutate: login, isLoading, error } = useLogin();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // localStorage.setItem("token", "true");
-    // navigate("/account");
+  const handleSubmit = (values: IFormValues) => {
+    console.log(values);
+    login({ email: values.email, password: values.password });
   };
+  const formikSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Enter a valid email.")
+      .required("Please enter your email."),
+    password: Yup.string()
+      .min(4, "Too short.")
+      .required("Please enter your password."),
+  });
+
+  const formik: FormikProps<IFormValues> = useFormik<IFormValues>({
+    enableReinitialize: true,
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: formikSchema,
+    onSubmit: handleSubmit,
+  });
 
   return (
     <Container sx={classes.sign}>
@@ -56,7 +76,7 @@ const Login = () => {
             <Typography variant="h2">Sign In</Typography>
           </Grid>
           <Grid item>
-            <form onSubmit={handleSubmit}>
+            <Box>
               <Box sx={classes.formGroup}>
                 <Grid container spacing={1} sx={classes.field}>
                   <Grid item>
@@ -65,13 +85,16 @@ const Login = () => {
                   <Grid item sx={classes.fieldInput}>
                     <TextField
                       fullWidth
-                      id="input-email"
+                      id="email"
                       label="Email"
-                      type="email"
+                      name="email"
                       variant="standard"
-                      // sx={classes.emailInput}
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.email && Boolean(formik.errors.email)
+                      }
+                      helperText={formik.touched.email && formik.errors.email}
                     />
                   </Grid>
                 </Grid>
@@ -84,13 +107,20 @@ const Login = () => {
                   <Grid item sx={classes.fieldInput}>
                     <TextField
                       fullWidth
-                      id="input-password"
+                      id="password"
                       label="Password"
+                      name="password"
                       type={showPassword ? "text" : "password"}
                       variant="standard"
-                      // sx={classes.passwordInput}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      error={
+                        formik.touched.password &&
+                        Boolean(formik.errors.password)
+                      }
+                      helperText={
+                        formik.touched.password && formik.errors.password
+                      }
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">
@@ -113,16 +143,15 @@ const Login = () => {
                   </Grid>
                 </Grid>
               </Box>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
+              <LoadingButton
                 fullWidth
+                loading={isLoading}
                 sx={classes.submit}
-                disabled={email === "" || password === ""}
+                variant="contained"
+                onClick={() => formik.handleSubmit()}
               >
                 Sign In
-              </Button>
+              </LoadingButton>
               <Link href="/signup" style={classes.altBtn}>
                 <Button
                   variant="outlined"
@@ -133,12 +162,12 @@ const Login = () => {
                   Don't have an account?
                 </Button>
               </Link>
-              <Box sx={classes.links}>
+              {/* <Box sx={classes.links}>
                 <Link href="/">
                   <MuiLink sx={classes.link}>Forgot password ?</MuiLink>
                 </Link>
-              </Box>
-            </form>
+              </Box> */}
+            </Box>
           </Grid>
         </Grid>
       </Fade>

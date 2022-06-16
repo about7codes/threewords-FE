@@ -16,10 +16,10 @@ export const styles = {
     boxShadow: "rgb(0 0 0 / 8%) 0px 0px 18px",
   },
   logo: {
-    display: "block",
-    width: "auto",
-    height: "36px",
-    margin: "0 auto",
+    // display: "block",
+    // width: "auto",
+    // height: "36px",
+    // margin: "0 auto",
   },
   signInnerHeader: {
     textAlign: "center",

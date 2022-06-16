@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SideBar from "./SideBar/SideBar";
+import Notify from "./Notify/Notify";
 
 interface ILayoutProps {
   children: React.ReactNode;
@@ -32,6 +33,7 @@ const Layout = ({ children }: ILayoutProps) => {
     <Container className="layout">
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
+        <Notify />
         <AppBar
           position="fixed"
           sx={{
