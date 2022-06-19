@@ -23,6 +23,13 @@ import * as Yup from "yup";
 
 import { styles as classes } from "./login.styles";
 import { useLogin } from "../../hooks/auth.hooks";
+import {
+  getCsrfToken,
+  getProviders,
+  getSession,
+  signIn,
+} from "next-auth/react";
+import { NextPageContext } from "next";
 // import { isAuthenticated } from "../../auth";
 
 interface IFormValues {
@@ -30,14 +37,24 @@ interface IFormValues {
   password: string;
 }
 
-const Login = () => {
+export default function Login({
+  csrfToken,
+  providers,
+}: {
+  csrfToken: string;
+  providers: any;
+}) {
   const [showPassword, setShowPassword] = useState(false);
 
   const { mutate: login, isLoading, error } = useLogin();
 
   const handleSubmit = (values: IFormValues) => {
     console.log(values);
-    login({ email: values.email, password: values.password });
+    // login({ email: values.email, password: values.password });
+    signIn("credentials", {
+      username: values.email,
+      password: values.password,
+    });
   };
   const formikSchema = Yup.object().shape({
     email: Yup.string()
@@ -83,6 +100,11 @@ const Login = () => {
                     <AccountCircle />
                   </Grid>
                   <Grid item sx={classes.fieldInput}>
+                    <input
+                      name="csrfToken"
+                      type="hidden"
+                      defaultValue={csrfToken}
+                    />
                     <TextField
                       fullWidth
                       id="email"
@@ -173,6 +195,27 @@ const Login = () => {
       </Fade>
     </Container>
   );
+}
+
+// export const getInitialProps = async (ctx) => {}
+
+Login.getInitialProps = async (ctx: NextPageContext) => {
+  const { req, res } = ctx;
+  const session = await getSession({ req });
+
+  if (session && res && session.authToken) {
+    res.writeHead(302, {
+      Location: "/",
+    });
+    res.end();
+    return;
+  }
+
+  return {
+    csrfToken: await getCsrfToken(ctx),
+    providers: await getProviders(),
+    session: undefined,
+  };
 };
 
-export default Login;
+// export default Login;

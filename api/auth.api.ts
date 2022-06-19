@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 // https://maxthree.herokuapp.com
 // http://localhost:8000
@@ -15,5 +16,7 @@ export const loginRequest = async ({
     { email, password },
     { withCredentials: true }
   );
+  Cookies.set("aToken", response.data.authToken);
+  Cookies.set("rToken", response.data.refreshToken);
   return response.data;
 };

@@ -61,7 +61,10 @@ const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
       <List>
         {appRoutes.map((item) => (
           <ListItem key={item.href} disablePadding>
-            <ListItemButton onClick={() => barToggle(item.href)}>
+            <ListItemButton
+              onClick={() => barToggle(item.href)}
+              selected={router.asPath === item.href}
+            >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.name} />
             </ListItemButton>
@@ -70,16 +73,22 @@ const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
       </List>
       <Divider />
       <List>
-        {["Logout", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton onClick={() => router.push("/login")}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => router.push("/login")}>
+            <ListItemIcon>
+              <MailIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Logout"} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => router.push("/login")}>
+            <ListItemIcon>
+              <MailIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Login"} />
+          </ListItemButton>
+        </ListItem>
       </List>
     </div>
   );

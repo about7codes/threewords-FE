@@ -1,9 +1,14 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
+import { useEffect } from "react";
+import { useSession } from "../hooks/reactQuery.hooks";
 
 const Home: NextPage = () => {
   // console.log(error?.message);
+  const sessionData = useSession();
+  console.log(sessionData);
+
   return (
     <div className={styles.container}>
       <Head>
