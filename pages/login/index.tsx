@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { NextPageContext } from "next";
+import { useRouter } from "next/router";
 import {
   Box,
   Container,
@@ -20,41 +22,63 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useFormik, FormikProps } from "formik";
 import * as Yup from "yup";
-
-import { styles as classes } from "./login.styles";
-import { useLogin } from "../../hooks/auth.hooks";
 import {
   getCsrfToken,
   getProviders,
   getSession,
   signIn,
 } from "next-auth/react";
-import { NextPageContext } from "next";
-// import { isAuthenticated } from "../../auth";
+
+import { styles as classes } from "./login.styles";
+import { useApp } from "../../hooks/app.hooks";
 
 interface IFormValues {
   email: string;
   password: string;
 }
 
-export default function Login({
-  csrfToken,
-  providers,
-}: {
-  csrfToken: string;
-  providers: any;
-}) {
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [, dispatch] = useApp();
 
-  const { mutate: login, isLoading, error } = useLogin();
-
-  const handleSubmit = (values: IFormValues) => {
+  const handleSubmit = async (values: IFormValues) => {
     console.log(values);
     // login({ email: values.email, password: values.password });
-    signIn("credentials", {
-      username: values.email,
-      password: values.password,
-    });
+    try {
+      setLoading(true);
+      // @ts-ignore
+      const { ok, error } = await signIn("credentials", {
+        username: values.email,
+        password: values.password,
+        redirect: false,
+      });
+      console.log("SignInRES", error);
+      if (!ok) throw new Error("Failed to signin.");
+      setLoading(false);
+      dispatch({
+        type: "SET_NOTIFY",
+        payload: {
+          type: "success",
+          message: "Signed in successfully",
+          open: true,
+        },
+      });
+      return router.push("/");
+    } catch (error) {
+      console.log("SignInError", error);
+      setLoading(false);
+      dispatch({
+        type: "SET_NOTIFY",
+        payload: {
+          type: "error",
+          // @ts-ignore
+          message: error.message || "Something went wrong",
+          open: true,
+        },
+      });
+    }
   };
   const formikSchema = Yup.object().shape({
     email: Yup.string()
@@ -100,11 +124,6 @@ export default function Login({
                     <AccountCircle />
                   </Grid>
                   <Grid item sx={classes.fieldInput}>
-                    <input
-                      name="csrfToken"
-                      type="hidden"
-                      defaultValue={csrfToken}
-                    />
                     <TextField
                       fullWidth
                       id="email"
@@ -167,7 +186,7 @@ export default function Login({
               </Box>
               <LoadingButton
                 fullWidth
-                loading={isLoading}
+                loading={loading}
                 sx={classes.submit}
                 variant="contained"
                 onClick={() => formik.handleSubmit()}
@@ -202,8 +221,9 @@ export default function Login({
 Login.getInitialProps = async (ctx: NextPageContext) => {
   const { req, res } = ctx;
   const session = await getSession({ req });
+  console.log(session);
 
-  if (session && res && session.authToken) {
+  if (session && res && session.user) {
     res.writeHead(302, {
       Location: "/",
     });

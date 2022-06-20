@@ -16,7 +16,8 @@ export const loginRequest = async ({
     { email, password },
     { withCredentials: true }
   );
-  Cookies.set("aToken", response.data.authToken);
-  Cookies.set("rToken", response.data.refreshToken);
-  return response.data;
+  // Cookies.set("aToken", response.data.authToken);
+  // Cookies.set("rToken", response.data.refreshToken);
+  // console.log("Headers", response.headers);
+  return response;
 };

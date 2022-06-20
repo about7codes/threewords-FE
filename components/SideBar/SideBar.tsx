@@ -13,6 +13,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
 
 const appRoutes = [
   {
@@ -38,7 +39,7 @@ const appRoutes = [
 ];
 
 interface ISideBarProps {
-  barToggle: (path: string) => void;
+  barToggle: (path?: string) => void;
   mobileOpen: boolean;
   drawerWidth: number;
 }
@@ -74,7 +75,12 @@ const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
       <Divider />
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => router.push("/login")}>
+          <ListItemButton
+            onClick={() => {
+              barToggle();
+              signOut();
+            }}
+          >
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
@@ -82,11 +88,25 @@ const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => router.push("/login")}>
+          <ListItemButton
+            onClick={() => barToggle("/login")}
+            selected={router.asPath === "/login"}
+          >
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
             <ListItemText primary={"Login"} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => barToggle("/signup")}
+            selected={router.asPath === "/signup"}
+          >
+            <ListItemIcon>
+              <MailIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Create account"} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -106,7 +126,7 @@ const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
           //   container={container}
           variant="temporary"
           open={mobileOpen}
-          onClose={barToggle}
+          onClose={() => barToggle()}
           ModalProps={{
             keepMounted: true,
           }}

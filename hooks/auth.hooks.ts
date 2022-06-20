@@ -13,8 +13,8 @@ export const useLogin = () => {
   return useMutation(loginRequest, {
     onSuccess: (data) => {
       console.log("success: ", data);
-      Cookie.set("aToken", data.authToken);
-      Cookie.set("rToken", data.refreshToken);
+      // Cookie.set("aToken", data.authToken);
+      // Cookie.set("rToken", data.refreshToken);
       dispatch({
         type: "SET_NOTIFY",
         payload: {
