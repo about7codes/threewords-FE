@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { NextPageContext } from "next";
-import { useRouter } from "next/router";
+import Cookie from "js-cookie";
 import {
   Box,
   Container,
@@ -22,63 +21,30 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useFormik, FormikProps } from "formik";
 import * as Yup from "yup";
-import {
-  getCsrfToken,
-  getProviders,
-  getSession,
-  signIn,
-} from "next-auth/react";
 
 import { styles as classes } from "./login.styles";
-import { useApp } from "../../hooks/app.hooks";
+import axios, { AxiosError } from "axios";
+// import { isAuthenticated } from "../../auth";
+import { useMutation } from "react-query";
+import { useRouter } from "next/router";
+import { AppContext } from "../../context/app.context";
+import { useLogin } from "../../hooks/auth.hooks";
 
 interface IFormValues {
   email: string;
   password: string;
 }
 
-export default function Login() {
+const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const [, dispatch] = useApp();
+  const [, dispatch] = useContext<any>(AppContext);
 
-  const handleSubmit = async (values: IFormValues) => {
+  const { mutate: login, isLoading, error } = useLogin();
+  console.log("Error2: ", error?.response?.data);
+
+  const handleSubmit = (values: IFormValues) => {
     console.log(values);
-    // login({ email: values.email, password: values.password });
-    try {
-      setLoading(true);
-      // @ts-ignore
-      const { ok, error } = await signIn("credentials", {
-        username: values.email,
-        password: values.password,
-        redirect: false,
-      });
-      console.log("SignInRES", error);
-      if (!ok) throw new Error("Failed to signin.");
-      setLoading(false);
-      dispatch({
-        type: "SET_NOTIFY",
-        payload: {
-          type: "success",
-          message: "Signed in successfully",
-          open: true,
-        },
-      });
-      return router.push("/");
-    } catch (error) {
-      console.log("SignInError", error);
-      setLoading(false);
-      dispatch({
-        type: "SET_NOTIFY",
-        payload: {
-          type: "error",
-          // @ts-ignore
-          message: error.message || "Something went wrong",
-          open: true,
-        },
-      });
-    }
+    login({ email: values.email, password: values.password });
   };
   const formikSchema = Yup.object().shape({
     email: Yup.string()
@@ -186,7 +152,7 @@ export default function Login() {
               </Box>
               <LoadingButton
                 fullWidth
-                loading={loading}
+                loading={isLoading}
                 sx={classes.submit}
                 variant="contained"
                 onClick={() => formik.handleSubmit()}
@@ -214,28 +180,6 @@ export default function Login() {
       </Fade>
     </Container>
   );
-}
-
-// export const getInitialProps = async (ctx) => {}
-
-Login.getInitialProps = async (ctx: NextPageContext) => {
-  const { req, res } = ctx;
-  const session = await getSession({ req });
-  console.log(session);
-
-  if (session && res && session.user) {
-    res.writeHead(302, {
-      Location: "/",
-    });
-    res.end();
-    return;
-  }
-
-  return {
-    csrfToken: await getCsrfToken(ctx),
-    providers: await getProviders(),
-    session: undefined,
-  };
 };
 
-// export default Login;
+export default Login;

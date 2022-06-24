@@ -18,6 +18,6 @@ export const loginRequest = async ({
   );
   // Cookies.set("aToken", response.data.authToken);
   // Cookies.set("rToken", response.data.refreshToken);
-  // console.log("Headers", response.headers);
-  return response;
+  // console.log(response);
+  return response.data;
 };

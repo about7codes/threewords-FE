@@ -1,7 +1,6 @@
 import React from "react";
 import type { AppProps } from "next/app";
 import { NextComponentType } from "next";
-import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@mui/material/styles";
 import { QueryClientProvider, Hydrate, QueryClient } from "react-query";
 
@@ -15,31 +14,28 @@ type CustomAppProps = AppProps & {
   Component: NextComponentType & { auth?: boolean };
 };
 
-function MyApp({
-  Component,
-  pageProps: { session, ...pageProps },
-}: CustomAppProps) {
-  const queryClient = React.useRef(new QueryClient());
+function MyApp({ Component, pageProps }: CustomAppProps) {
+  const [queryClient] = React.useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 1000 * 20,
+          },
+        },
+      })
+  );
+
   return (
-    <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient.current}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <ThemeProvider theme={theme}>
-            <AppProvider>
-              <Layout>
-                {Component.auth ? (
-                  <Protected>
-                    <Component {...pageProps} />
-                  </Protected>
-                ) : (
-                  <Component {...pageProps} />
-                )}
-              </Layout>
-            </AppProvider>
-          </ThemeProvider>
-        </Hydrate>
-      </QueryClientProvider>
-    </SessionProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <AppProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </AppProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

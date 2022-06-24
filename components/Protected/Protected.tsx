@@ -1,18 +1,27 @@
 import React from "react";
-import { useSession } from "../../hooks/reactQuery.hooks";
+import { Box, CircularProgress } from "@mui/material";
+import { parseCookies } from "nookies";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 interface IProtectedProps {
   children: React.ReactNode;
 }
 
-function Protected({ children }: IProtectedProps) {
-  const [session, status] = useSession({ required: true });
-  //   console.log("session", session);
-  //   console.log(status);
-  if (!session) {
-    return <div>Loading...</div>;
+export default function Protected({ children }: IProtectedProps) {
+  const router = useRouter();
+  const authToken = parseCookies().aToken;
+  if (!authToken) {
+    router.push("/login");
   }
-  return <>{children};</>;
-}
 
-export default Protected;
+  // if (!true) {
+  //   return (
+  //     <Box sx={{ display: "flex", justifyContent: "center" }}>
+  //       <CircularProgress />
+  //     </Box>
+  //   );
+  // }
+
+  return <>{children}</>;
+}

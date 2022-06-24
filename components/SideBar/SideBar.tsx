@@ -13,7 +13,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
-import { signOut } from "next-auth/react";
+import Cookies from "js-cookie";
+import { destroyCookie } from "nookies";
 
 const appRoutes = [
   {
@@ -78,7 +79,9 @@ const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
           <ListItemButton
             onClick={() => {
               barToggle();
-              signOut();
+              console.log("mobile", mobileOpen);
+              destroyCookie(null, "aToken");
+              destroyCookie(null, "rToken");
             }}
           >
             <ListItemIcon>

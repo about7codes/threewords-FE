@@ -1,3 +1,5 @@
+import axios from "axios";
+import { parseCookies } from "nookies";
 import React from "react";
 
 const CreatePhrase = () => {

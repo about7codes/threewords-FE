@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 
 import { useApp } from "./app.hooks";
 import { loginRequest } from "../api/auth.api";
+import { setCookie } from "nookies";
 
 export const useLogin = () => {
   const [, dispatch] = useApp();
@@ -13,8 +14,14 @@ export const useLogin = () => {
   return useMutation(loginRequest, {
     onSuccess: (data) => {
       console.log("success: ", data);
-      // Cookie.set("aToken", data.authToken);
-      // Cookie.set("rToken", data.refreshToken);
+      setCookie(null, "aToken", data.authToken, {
+        maxAge: 60,
+        path: "/",
+      });
+      setCookie(null, "rToken", data.refreshToken, {
+        maxAge: 60,
+        path: "/",
+      });
       dispatch({
         type: "SET_NOTIFY",
         payload: {
