@@ -3,12 +3,11 @@ import { parseCookies } from "nookies";
 import { useRouter } from "next/router";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-import { deletePhrase, getAllPhrases } from "../api/phrase.api";
+import { deletePhrase, getAllPhrases, updatePhrase } from "../api/phrase.api";
 import { useApp } from "./app.hooks";
 
 // Fetch all phrases from the database with react-query
 export const useAllPhrases = () => {
-  console.log("FETCHING PHRASES");
   const router = useRouter();
   const authToken = parseCookies().aToken;
 
@@ -20,9 +19,47 @@ export const useAllPhrases = () => {
   return useQuery(["allphrases", authToken], () => getAllPhrases(authToken));
 };
 
+// Update a phrase from the database with react-query
+export const useUpdatePhrase = () => {
+  const [, dispatch] = useApp();
+  const cache = useQueryClient();
+
+  return useMutation(updatePhrase, {
+    onSuccess: (data) => {
+      // Update cache data
+      cache.invalidateQueries("allphrases");
+
+      dispatch({
+        type: "SET_NOTIFY",
+        payload: {
+          type: "success",
+          message: data.message || "Updated successfully",
+          open: true,
+        },
+      });
+      console.log("UpdateSuccess: ", data);
+    },
+
+    onError: (error: AxiosError) => {
+      dispatch({
+        type: "SET_NOTIFY",
+        payload: {
+          type: "error",
+          message:
+            // @ts-ignore
+            error.response?.data?.error ||
+            error.message ||
+            "Something went wrong",
+          open: true,
+        },
+      });
+      console.log("UpdateError: ", error);
+    },
+  });
+};
+
 // Delete a phrase from the database with react-query
 export const useDeletePhrase = () => {
-  console.log("DELETING PHRASE");
   const cache = useQueryClient();
   const [, dispatch] = useApp();
 

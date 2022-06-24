@@ -1,8 +1,6 @@
-import axios from "axios";
-import { GetServerSideProps } from "next";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { Box, Slide, CircularProgress } from "@mui/material";
 import Card from "../../components/Card/Card";
-import { Box, Slide } from "@mui/material";
 import { useAllPhrases } from "../../hooks/phrase.hooks";
 
 const AllPhrases = () => {
@@ -10,7 +8,13 @@ const AllPhrases = () => {
 
   console.log("allPhrasesError", error);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <div>

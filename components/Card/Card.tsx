@@ -12,10 +12,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 import { styles as classes } from "./card.styles";
 import CardEdit from "../CardEdit/CardEdit";
-import axios, { AxiosError } from "axios";
 import { parseCookies } from "nookies";
-import { useMutation, useQueryClient } from "react-query";
-import { useApp } from "../../hooks/app.hooks";
 import { useDeletePhrase } from "../../hooks/phrase.hooks";
 
 type CardProps = {
@@ -30,13 +27,13 @@ type CardProps = {
 
 const Card = (props: CardProps) => {
   const [editMode, setEditMode] = useState(false);
-  const { mutate: delPhrase, isLoading, error } = useDeletePhrase();
-  console.log("DelError2: ", error?.response?.data);
+  const { mutate: deletePhrase, isLoading, error } = useDeletePhrase();
+  // console.log("DelError2: ", error?.response?.data);
 
   const handleDelete = () => {
     console.log("Delete: ", props.phrase._id);
     const authToken = parseCookies().aToken;
-    delPhrase({
+    deletePhrase({
       token: authToken,
       id: props.phrase._id,
     });

@@ -8,11 +8,18 @@ import {
   TextField,
   IconButton,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 
 import { styles as classes } from "./cardEdit.styles";
+import axios, { AxiosError } from "axios";
+import { parseCookies } from "nookies";
+import { useMutation, useQueryClient } from "react-query";
+import { useApp } from "../../hooks/app.hooks";
+import { useRouter } from "next/router";
+import { useUpdatePhrase } from "../../hooks/phrase.hooks";
 
 type CardEditProps = {
   phrase: { [key: string]: any };
@@ -24,10 +31,30 @@ interface IFormValues {
 }
 
 const CardEdit = (props: CardEditProps) => {
-  const handleSubmit = () => {};
+  const router = useRouter();
+  const { mutateAsync: updatePhrase, isLoading } = useUpdatePhrase();
+
+  const handleSubmit = async (values: IFormValues) => {
+    console.log(values);
+
+    try {
+      const authToken = parseCookies().aToken;
+      if (!authToken) router.reload();
+
+      await updatePhrase({
+        token: authToken,
+        id: props.phrase._id,
+        words: values.words,
+      });
+
+      props.setEditMode(false);
+    } catch (error) {
+      console.log("UpdateError1: ", error);
+    }
+  };
 
   const formikSchema = Yup.object().shape({
-    words: Yup.string().required("Please enter your email."),
+    words: Yup.string().required("Please enter your phrase."),
   });
 
   const formik: FormikProps<IFormValues> = useFormik<IFormValues>({
@@ -70,16 +97,25 @@ const CardEdit = (props: CardEditProps) => {
               </Typography>
             </Box>
           </Box>
-          <Box>
+          <Box sx={{ display: "flex", alignItems: "baseline" }}>
             <IconButton
               color="primary"
               onClick={() => props.setEditMode(false)}
             >
               <ClearIcon />
             </IconButton>
-            <IconButton color="primary" onClick={(e) => console.log("update")}>
-              <CheckIcon />
-            </IconButton>
+            {isLoading ? (
+              <CircularProgress
+                size={20}
+                sx={{
+                  margin: "8px 10px",
+                }}
+              />
+            ) : (
+              <IconButton color="primary" onClick={() => formik.handleSubmit()}>
+                <CheckIcon />
+              </IconButton>
+            )}
           </Box>
         </Grid>
       </Grid>
