@@ -1,5 +1,7 @@
 import React from "react";
 import * as Yup from "yup";
+import { parseCookies } from "nookies";
+import { useRouter } from "next/router";
 import { useFormik, FormikProps } from "formik";
 import {
   Box,
@@ -14,11 +16,6 @@ import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 
 import { styles as classes } from "./cardEdit.styles";
-import axios, { AxiosError } from "axios";
-import { parseCookies } from "nookies";
-import { useMutation, useQueryClient } from "react-query";
-import { useApp } from "../../hooks/app.hooks";
-import { useRouter } from "next/router";
 import { useUpdatePhrase } from "../../hooks/phrase.hooks";
 
 type CardEditProps = {

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -12,9 +13,10 @@ import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { useRouter } from "next/router";
-import Cookies from "js-cookie";
-import { destroyCookie } from "nookies";
+import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { destroyCookie, parseCookies } from "nookies";
 
 const appRoutes = [
   {
@@ -47,6 +49,27 @@ interface ISideBarProps {
 
 const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
   const router = useRouter();
+  const [isLogged, setIsLogged] = useState(false);
+
+  useEffect(() => {
+    router.events.on("routeChangeComplete", () => {
+      console.log("route change complete ON");
+
+      const authToken = parseCookies().aToken;
+      if (!authToken) {
+        return setIsLogged(false);
+      }
+      setIsLogged(true);
+    });
+    console.log("isLogged: ", isLogged);
+
+    return () => {
+      router.events.off("routeChangeComplete", () => {
+        console.log("route change complete OFF");
+      });
+    };
+  }, [router.events]);
+
   const drawer = (
     <div>
       <Toolbar />
@@ -75,43 +98,49 @@ const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
       </List>
       <Divider />
       <List>
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              barToggle();
-              console.log("mobile", mobileOpen);
-              destroyCookie(null, "aToken");
-              destroyCookie(null, "rToken");
-            }}
-          >
-            <ListItemIcon>
-              <MailIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Logout"} />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => barToggle("/login")}
-            selected={router.asPath === "/login"}
-          >
-            <ListItemIcon>
-              <MailIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Login"} />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => barToggle("/signup")}
-            selected={router.asPath === "/signup"}
-          >
-            <ListItemIcon>
-              <MailIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Create account"} />
-          </ListItemButton>
-        </ListItem>
+        {isLogged ? (
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => {
+                barToggle();
+                console.log("mobile", mobileOpen);
+                destroyCookie(null, "aToken");
+                destroyCookie(null, "rToken");
+                router.push("/login");
+              }}
+            >
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Logout"} />
+            </ListItemButton>
+          </ListItem>
+        ) : (
+          <>
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() => barToggle("/login")}
+                selected={router.asPath === "/login"}
+              >
+                <ListItemIcon>
+                  <LoginIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Login"} />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() => barToggle("/signup")}
+                selected={router.asPath === "/signup"}
+              >
+                <ListItemIcon>
+                  <PersonAddIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Create account"} />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
       </List>
     </div>
   );

@@ -1,12 +1,24 @@
 import React from "react";
-import { Box, Slide, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Slide,
+  CircularProgress,
+  Typography,
+  Button,
+  Paper,
+} from "@mui/material";
 import Card from "../../components/Card/Card";
 import { useAllPhrases } from "../../hooks/phrase.hooks";
+import HeaderInfo from "../../components/HeaderInfo/HeaderInfo";
+import Link from "next/link";
 
 const AllPhrases = () => {
   const { data: allPhrases, isLoading, error } = useAllPhrases();
 
-  console.log("allPhrasesError", error);
+  if (error) {
+    // @ts-ignore
+    console.log("allPhrasesError", error.response.data.error);
+  }
 
   if (isLoading) {
     return (
@@ -18,11 +30,21 @@ const AllPhrases = () => {
 
   return (
     <div>
-      <h1>All Phrases Threemax</h1>
-      AllPhrases
-      {allPhrases?.phrases && JSON.stringify(allPhrases)}
+      <HeaderInfo title="All Phrases Threemax" />
+      <h1>All Your Phrases</h1>
       {allPhrases && allPhrases.phrases.length == 0 ? (
-        <Box>No phrase found</Box>
+        <Slide in={true} direction="up">
+          <Paper
+            sx={{ padding: "10px", display: "grid", placeContent: "center" }}
+          >
+            <Typography variant="h5" textAlign="center" gutterBottom>
+              No phrase added.
+            </Typography>
+            <Link href="/create">
+              <Button variant="contained">Add phrase</Button>
+            </Link>
+          </Paper>
+        </Slide>
       ) : (
         allPhrases &&
         allPhrases.phrases.map((phrase: any) => (
@@ -45,76 +67,4 @@ AllPhrases.auth = {
   redirectTo: "/login",
 };
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const authToken = parseCookies(ctx).aToken;
-//   const queryClient = new QueryClient({
-//     defaultOptions: {
-//       queries: {
-//         staleTime: 1000 * 20,
-//       },
-//     },
-//   });
-
-//   const AllPhrases1 = await getAllPhrases(authToken);
-
-//   return {
-//     props: {
-//       AllPhrases1,
-//     },
-//   };
-// };
-
-// export const getServerSideProps = async (ctx: any) => {
-//   try {
-//     const authToken = parseCookies(ctx).aToken;
-
-//     // @ts-ignore
-//     const allPhrases = await getAllPhrases(authToken);
-
-//     return {
-//       props: {
-//         allPhrases,
-//       },
-//     };
-//   } catch (error: any) {
-//     console.log("serverSide1", error.response.data.error);
-//     // return { redirect: { destination: "/login", permanent: false } };
-//     return {
-//       props: {
-//         error: error.response.data.error,
-//         AllPhrases: { phrases: [] },
-//       },
-//     };
-//   }
-// };
-
 export default AllPhrases;
-
-// export async function getServerSideProps(ctx: any) {
-//   const token = parseCookies(ctx).aToken;
-
-//   if (!token) return { redirect: { destination: "/login", permanent: false } };
-
-//   const userRes = await axios.get("https://maxthree.herokuapp.com/auth/me", {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   console.log("userProfile", userRes.data);
-
-//   const data: any = userRes;
-
-//   // does not allow access to page if not logged in
-//   if (!data.username) {
-//     return {
-//       redirect: {
-//         destination: "/login",
-//         permanent: false,
-//       },
-//     };
-//   }
-
-//   return {
-//     props: { data },
-//   };
-// }

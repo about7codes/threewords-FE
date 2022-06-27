@@ -14,8 +14,25 @@ export const loginRequest = async ({
 }) => {
   const response = await axios.post(
     "https://maxthree.herokuapp.com/auth/signin",
-    { email, password },
-    { withCredentials: true }
+    { email, password }
+  );
+  // Cookies.set("aToken", response.data.authToken);
+  // Cookies.set("rToken", response.data.refreshToken);
+  // console.log(response);
+  return response.data;
+};
+
+// Signup/Create User
+export const signupRequest = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const response = await axios.post(
+    "https://maxthree.herokuapp.com/auth/signup",
+    { email, password }
   );
   // Cookies.set("aToken", response.data.authToken);
   // Cookies.set("rToken", response.data.refreshToken);

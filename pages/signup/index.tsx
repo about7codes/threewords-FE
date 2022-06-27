@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Cookie from "js-cookie";
 import {
   Box,
   Container,
@@ -22,13 +21,13 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useFormik, FormikProps } from "formik";
 import * as Yup from "yup";
 
-import { styles as classes } from "./login.styles";
+import { styles as classes } from "./signup.styles";
 import axios, { AxiosError } from "axios";
 // import { isAuthenticated } from "../../auth";
 import { useMutation } from "react-query";
 import { useRouter } from "next/router";
 import { AppContext } from "../../context/app.context";
-import { useLogin } from "../../hooks/auth.hooks";
+import { useSignup } from "../../hooks/auth.hooks";
 import HeaderInfo from "../../components/HeaderInfo/HeaderInfo";
 
 interface IFormValues {
@@ -36,16 +35,16 @@ interface IFormValues {
   password: string;
 }
 
-const Login = () => {
+const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [, dispatch] = useContext<any>(AppContext);
 
-  const { mutate: login, isLoading, error } = useLogin();
+  const { mutate: signup, isLoading, error } = useSignup();
   console.log("Error2: ", error?.response?.data);
 
   const handleSubmit = (values: IFormValues) => {
     console.log(values);
-    login({ email: values.email, password: values.password });
+    signup({ email: values.email, password: values.password });
   };
   const formikSchema = Yup.object().shape({
     email: Yup.string()
@@ -82,7 +81,7 @@ const Login = () => {
             />
           </Grid>
           <Grid item sx={classes.signInnerHeader}>
-            <Typography variant="h2">Sign In</Typography>
+            <Typography variant="h2">Sign Up</Typography>
           </Grid>
           <Grid item>
             <Box>
@@ -159,23 +158,18 @@ const Login = () => {
                 variant="contained"
                 onClick={() => formik.handleSubmit()}
               >
-                Sign In
+                Create account
               </LoadingButton>
-              <Link href="/signup" style={classes.altBtn}>
+              <Link href="/login" style={classes.altBtn}>
                 <Button
                   variant="outlined"
                   color="primary"
                   fullWidth
                   sx={classes.submit}
                 >
-                  Don't have an account?
+                  Already have an account ?
                 </Button>
               </Link>
-              {/* <Box sx={classes.links}>
-                <Link href="/">
-                  <MuiLink sx={classes.link}>Forgot password ?</MuiLink>
-                </Link>
-              </Box> */}
             </Box>
           </Grid>
         </Grid>
@@ -184,4 +178,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

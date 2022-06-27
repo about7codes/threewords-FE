@@ -15,7 +15,8 @@ export const styles = {
     backgroundColor: "#fff",
     boxShadow: "rgb(0 0 0 / 8%) 0px 0px 18px",
   },
-  logo: {},
+  logo: {
+  },
   signInnerHeader: {
     textAlign: "center",
   },
