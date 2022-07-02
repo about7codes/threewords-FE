@@ -33,7 +33,7 @@ export const useProfile = () => {
 
   if (!authToken && typeof window !== "undefined") {
     router.push("/login");
-    return { data: {}, isLoading: false, error: null };
+    // return { data: {}, isLoading: false, error: null };
   }
 
   return useQuery(["profile", authToken], () => getProfile(authToken));
@@ -113,7 +113,12 @@ const Profile = () => {
                 </Grid>
               </Grid>
               <Grid item xs={12} sx={classes.btnBox}>
-                <Button variant="contained" size="large" sx={classes.del}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  sx={classes.del}
+                  disabled
+                >
                   Delete account
                 </Button>
               </Grid>

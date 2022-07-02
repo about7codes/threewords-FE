@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 
 // https://maxthree.herokuapp.com
 // http://localhost:8000

@@ -13,7 +13,7 @@ export const useAllPhrases = () => {
 
   if (!authToken && typeof window !== "undefined") {
     router.push("/login");
-    return { data: { phrases: [] }, isLoading: false, error: null };
+    // return { data: { phrases: [] }, isLoading: false, error: null };
   }
 
   return useQuery(["allphrases", authToken], () => getAllPhrases(authToken));

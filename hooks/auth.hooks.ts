@@ -1,4 +1,3 @@
-import Cookie from "js-cookie";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
@@ -16,11 +15,11 @@ export const useLogin = () => {
     onSuccess: (data) => {
       console.log("success: ", data);
       setCookie(null, "aToken", data.authToken, {
-        maxAge: 60,
+        maxAge: 24 * 60 * 60 * 1000, // 24 hrs
         path: "/",
       });
       setCookie(null, "rToken", data.refreshToken, {
-        maxAge: 60,
+        maxAge: 24 * 60 * 60 * 1000, // 24 hrs
         path: "/",
       });
       dispatch({

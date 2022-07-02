@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Cookie from "js-cookie";
 import {
   Box,
   Container,
@@ -168,7 +167,7 @@ const Login = () => {
                   fullWidth
                   sx={classes.submit}
                 >
-                  Don't have an account?
+                  Don&rsquo;t have an account?
                 </Button>
               </Link>
               {/* <Box sx={classes.links}>
