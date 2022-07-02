@@ -11,7 +11,7 @@ import {
 import Card from "../../components/Card/Card";
 import { useAllPhrases } from "../../hooks/phrase.hooks";
 import HeaderInfo from "../../components/HeaderInfo/HeaderInfo";
-import { styles as classes } from "./allPhrases.styles";
+import { styles as classes } from "../../styles/allPhrases.styles";
 
 const AllPhrases = () => {
   const { data: allPhrases, isLoading, error } = useAllPhrases();

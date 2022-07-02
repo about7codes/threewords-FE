@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -21,11 +21,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useFormik, FormikProps } from "formik";
 import * as Yup from "yup";
 
-import { styles as classes } from "./login.styles";
-import axios, { AxiosError } from "axios";
-// import { isAuthenticated } from "../../auth";
-import { useMutation } from "react-query";
-import { useRouter } from "next/router";
+import { styles as classes } from "../../styles/login.styles";
 import { AppContext } from "../../context/app.context";
 import { useLogin } from "../../hooks/auth.hooks";
 import HeaderInfo from "../../components/HeaderInfo/HeaderInfo";

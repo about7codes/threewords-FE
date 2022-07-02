@@ -14,7 +14,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import HeaderInfo from "../../components/HeaderInfo/HeaderInfo";
-import { styles as classes } from "./profile.styles";
+import { styles as classes } from "../../styles/profile.styles";
 
 // Fetch user profile from the database
 export const getProfile = async (token: string) => {

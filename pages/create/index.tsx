@@ -9,13 +9,12 @@ import {
   Paper,
   TextField,
   IconButton,
-  Typography,
   CircularProgress,
   Slide,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddBox";
 import BackspaceIcon from "@mui/icons-material/Backspace";
-import { styles as classes } from "./create.styles";
+import { styles as classes } from "../../styles/create.styles";
 import { useRouter } from "next/router";
 import { useMutation, useQueryClient } from "react-query";
 import { useApp } from "../../hooks/app.hooks";
