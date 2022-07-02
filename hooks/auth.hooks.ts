@@ -1,6 +1,5 @@
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import Router from "next/router";
 import { useMutation } from "react-query";
 
 import { useApp } from "./app.hooks";
@@ -11,7 +10,7 @@ import { setCookie } from "nookies";
 export const useLogin = () => {
   const [, dispatch] = useApp();
 
-  // const router = useRouter();
+  const router = useRouter();
   return useMutation(loginRequest, {
     onSuccess: (data) => {
       console.log("success: ", data);
@@ -32,7 +31,7 @@ export const useLogin = () => {
           open: true,
         },
       });
-      Router.push("/all");
+      router.push("/all");
     },
     onError: (error: AxiosError) => {
       console.log("Error1: ", error.response?.data);
