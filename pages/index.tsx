@@ -1,21 +1,16 @@
 import type { NextPage } from "next";
-import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { useEffect } from "react";
+import AppInfo from "../components/AppInfo/AppInfo";
+import HeaderInfo from "../components/HeaderInfo/HeaderInfo";
 
 const Home: NextPage = () => {
   // console.log(error?.message);
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Threewords App</title>
-        <meta name="description" content="Threewords App next app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      Hellow next
-      <br />
-      How are you
+      <HeaderInfo title="Threemax" />
+      <h1>Threemax</h1>
+      <AppInfo />
     </div>
   );
 };

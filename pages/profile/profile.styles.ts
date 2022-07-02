@@ -1,4 +1,16 @@
 export const styles = {
+  imgBox: {
+    display: "flex",
+    marginBottom: "15px",
+    "@media (max-width: 600px)": {
+      justifyContent: "center",
+    },
+  },
+  img: {
+    backgroundColor: "#fff3f4",
+    display: "inline-block",
+    borderRadius: "50%",
+  },
   databox: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
@@ -16,5 +28,15 @@ export const styles = {
   },
   val: {
     color: "#202020",
+  },
+  btnBox: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  del: {
+    width: "100%",
+    "@media (min-width: 900px)": {
+      width: "auto",
+    },
   },
 };

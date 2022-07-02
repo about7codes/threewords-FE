@@ -10,9 +10,11 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
+import AddIcon from "@mui/icons-material/Add";
+import PersonIcon from "@mui/icons-material/Person";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -21,22 +23,22 @@ import { destroyCookie, parseCookies } from "nookies";
 const appRoutes = [
   {
     name: "All Phrases",
-    icon: <InboxIcon />,
+    icon: <LightbulbIcon />,
     href: "/all",
   },
   {
     name: "Create Phrase",
-    icon: <InboxIcon />,
+    icon: <AddIcon />,
     href: "/create",
   },
   {
     name: "Profile",
-    icon: <InboxIcon />,
+    icon: <PersonIcon />,
     href: "/profile",
   },
   {
     name: "About",
-    icon: <InboxIcon />,
+    icon: <HelpOutlineIcon />,
     href: "/about",
   },
 ];

@@ -20,7 +20,7 @@ export default async function middleware(req: NextRequest) {
     try {
       const jwtData = await jose.jwtVerify(
         authToken,
-        new TextEncoder().encode(`auththreewordskey`)
+        new TextEncoder().encode(process.env.ACCESSTOKEMKEY)
       );
       console.log("jwtData", jwtData);
 

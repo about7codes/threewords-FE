@@ -57,16 +57,18 @@ const Profile = () => {
       <h1>Your Threemax Profile</h1>
       {userProfile && userProfile.user ? (
         <Slide in={true} direction="up">
-          <Paper sx={{ padding: "10px" }}>
+          <Paper sx={{ padding: "20px" }}>
             <Grid container>
-              <Grid item xs={12}>
-                <Image
-                  src="/trianglex.png"
-                  alt="me"
-                  width="164"
-                  height="164"
-                  className="sidebar-logo-img"
-                />
+              <Grid item xs={12} sx={classes.imgBox}>
+                <Box sx={classes.img}>
+                  <Image
+                    src="/trianglex.png"
+                    alt="me"
+                    width="164"
+                    height="164"
+                    className="sidebar-logo-img"
+                  />
+                </Box>
               </Grid>
               <Grid item xs={12} sx={classes.databox}>
                 <Grid item xs={12} sx={classes.info}>
@@ -110,8 +112,10 @@ const Profile = () => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <Button variant="contained">Delete account</Button>
+              <Grid item xs={12} sx={classes.btnBox}>
+                <Button variant="contained" size="large" sx={classes.del}>
+                  Delete account
+                </Button>
               </Grid>
             </Grid>
           </Paper>

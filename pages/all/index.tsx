@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import {
   Box,
   Slide,
@@ -10,7 +11,7 @@ import {
 import Card from "../../components/Card/Card";
 import { useAllPhrases } from "../../hooks/phrase.hooks";
 import HeaderInfo from "../../components/HeaderInfo/HeaderInfo";
-import Link from "next/link";
+import { styles as classes } from "./allPhrases.styles";
 
 const AllPhrases = () => {
   const { data: allPhrases, isLoading, error } = useAllPhrases();
@@ -31,7 +32,10 @@ const AllPhrases = () => {
   return (
     <div>
       <HeaderInfo title="All Phrases Threemax" />
-      <h1>All Your Phrases</h1>
+      <Box sx={classes.head}>
+        <h1>All Your Phrases</h1>
+        <Box sx={classes.badge}>{allPhrases.phrases.length}</Box>
+      </Box>
       {allPhrases && allPhrases.phrases.length == 0 ? (
         <Slide in={true} direction="up">
           <Paper

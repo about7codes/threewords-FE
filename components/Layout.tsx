@@ -24,7 +24,10 @@ const Layout = ({ children }: ILayoutProps) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = (path?: string) => {
-    setMobileOpen(!mobileOpen);
+    if (window.screen.width <= 600) setMobileOpen(!mobileOpen);
+
+    console.clear();
+    console.log("width", window.screen.width);
 
     if (path) router.push(path);
   };

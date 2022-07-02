@@ -67,7 +67,7 @@ const Signup = () => {
 
   return (
     <Container sx={classes.sign}>
-      <HeaderInfo title="Login to Threemax" />
+      <HeaderInfo title="Signup to Threemax" />
       <Fade in={true}>
         <Grid container sx={classes.signInner}>
           <Grid item justifyContent="center" display="flex">
