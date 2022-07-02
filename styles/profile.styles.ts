@@ -14,6 +14,9 @@ export const styles = {
   databox: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+    "@media (max-width: 400px)": {
+      gridTemplateColumns: "repeat(auto-fit, minmax(272px, 1fr))",
+    },
   },
   info: {
     padding: "15px",
