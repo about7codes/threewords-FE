@@ -82,6 +82,9 @@ const Layout = ({ children }: ILayoutProps) => {
             p: 3,
             width: { sm: `calc(100% - ${drawerWidth}px)` },
             minHeight: "100vh",
+            "@media (max-width: 600px)": {
+              padding: "24px 0px",
+            },
           }}
         >
           <Toolbar />
