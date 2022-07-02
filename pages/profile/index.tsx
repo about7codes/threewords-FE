@@ -132,10 +132,4 @@ const Profile = () => {
   );
 };
 
-Profile.auth = {
-  required: true,
-  loading: <div>Loading...</div>,
-  redirectTo: "/login",
-};
-
 export default Profile;

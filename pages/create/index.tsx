@@ -166,10 +166,4 @@ const CreatePhrase = () => {
   );
 };
 
-CreatePhrase.auth = {
-  required: true,
-  loading: <div>Loading...</div>,
-  redirectTo: "/login",
-};
-
 export default CreatePhrase;
