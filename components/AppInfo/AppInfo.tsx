@@ -15,19 +15,19 @@ const AppInfo = () => {
           list, and then view your list of phrases with others.
         </Typography>
         <h2>FrontEnd Code</h2>
-        <Typography variant="body1">
+        <Typography variant="body1" sx={classes.aboutLinks}>
           <Link href="https://github.com/about7codes/threewords-BE">
             https://github.com/about7codes/threewords-BE
           </Link>
         </Typography>
         <h2>BackEnd Code</h2>
-        <Typography variant="body1">
+        <Typography variant="body1" sx={classes.aboutLinks}>
           <Link href="https://github.com/about7codes/threewords-BE">
             https://github.com/about7codes/threewords-BE
           </Link>
         </Typography>
         <h2>Developer</h2>
-        <Typography variant="body1">
+        <Typography variant="body1" sx={classes.aboutLinks}>
           <Link href="https://github.com/about7codes">
             https://github.com/about7codes
           </Link>
