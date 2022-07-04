@@ -19,6 +19,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { destroyCookie, parseCookies } from "nookies";
+import { useCheckLogin } from "../../hooks/app.hooks";
 
 const appRoutes = [
   {
@@ -51,26 +52,8 @@ interface ISideBarProps {
 
 const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
   const router = useRouter();
-  const [isLogged, setIsLogged] = useState(false);
 
-  useEffect(() => {
-    router.events.on("routeChangeComplete", () => {
-      console.log("route change complete ON");
-
-      const authToken = parseCookies().aToken;
-      if (!authToken) {
-        return setIsLogged(false);
-      }
-      setIsLogged(true);
-    });
-    console.log("isLogged: ", isLogged);
-
-    return () => {
-      router.events.off("routeChangeComplete", () => {
-        console.log("route change complete OFF");
-      });
-    };
-  }, [router.events, isLogged]);
+  console.log("checkLogin", useCheckLogin());
 
   const drawer = (
     <div>
@@ -100,7 +83,7 @@ const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
       </List>
       <Divider />
       <List>
-        {isLogged ? (
+        {useCheckLogin() ? (
           <ListItem disablePadding>
             <ListItemButton
               onClick={() => {

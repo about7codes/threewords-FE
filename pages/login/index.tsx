@@ -26,6 +26,7 @@ import { useLogin } from "../../hooks/auth.hooks";
 import HeaderInfo from "../../components/HeaderInfo/HeaderInfo";
 import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
+import { useCheckLogin } from "../../hooks/app.hooks";
 
 interface IFormValues {
   email: string;
@@ -34,35 +35,16 @@ interface IFormValues {
 
 const Login = () => {
   const router = useRouter();
-  const [isLogged, setIsLogged] = useState(false);
+  const isLogged = useCheckLogin();
   const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {
-    router.events.on("routeChangeComplete", () => {
-      console.log("Lroute change complete ON");
-
-      const authToken = parseCookies().aToken;
-      if (!authToken) {
-        return setIsLogged(false);
-      }
-      setIsLogged(true);
-    });
-    console.log("LisLogged: ", isLogged);
-
-    return () => {
-      router.events.off("routeChangeComplete", () => {
-        console.log("Lroute change complete OFF");
-      });
-    };
-  }, [router.events]);
 
   useEffect(() => {
     if (isLogged) {
       console.log("Lredirect to /all");
-      // router.push("/all");
+      router.push("/all");
       return;
     }
-  }, [isLogged]);
+  }, []);
 
   const { mutate: login, isLoading, error } = useLogin();
 
