@@ -75,7 +75,7 @@ const Login = () => {
     console.log("logRes: ", logRes);
     if (logRes) {
       console.log("Lredirect to /all");
-      router.push("/all");
+      window.location.href = "/all";
     }
   };
   const formikSchema = Yup.object().shape({
