@@ -5,21 +5,12 @@ import { useMutation } from "react-query";
 import { useApp } from "./app.hooks";
 import { loginRequest, signupRequest } from "../api/auth.api";
 import { setCookie } from "nookies";
-import { useEffect, useState } from "react";
 
 // Login User with react-query
 export const useLogin = () => {
   const [, dispatch] = useApp();
+
   const router = useRouter();
-  const [redirect, setRedirect] = useState(false);
-
-  // useEffect(() => {
-  //   if (redirect) {
-  //     console.log("uLredirect to /all");
-  //     router.push("/all");
-  //   }
-  // }, [redirect]);
-
   return useMutation(loginRequest, {
     onSuccess: (data) => {
       console.log("success: ", data);
@@ -40,8 +31,8 @@ export const useLogin = () => {
           open: true,
         },
       });
-      // router.push("/all");
-      setRedirect(true);
+      router.push("/all");
+      // window.location.href = "/all";
     },
     onError: (error: AxiosError) => {
       console.log("Error1: ", error.response?.data);
@@ -54,7 +45,6 @@ export const useLogin = () => {
           open: true,
         },
       });
-      setRedirect(false);
     },
   });
 };
