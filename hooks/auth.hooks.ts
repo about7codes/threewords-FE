@@ -31,8 +31,8 @@ export const useLogin = () => {
           open: true,
         },
       });
-      router.push("/all");
-      // window.location.href = "/all";
+      // router.push("/all");
+      window.location.href = "/all";
     },
     onError: (error: AxiosError) => {
       console.log("Error1: ", error.response?.data);

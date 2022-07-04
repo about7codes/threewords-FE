@@ -70,7 +70,7 @@ const SideBar = ({ barToggle, mobileOpen, drawerWidth }: ISideBarProps) => {
         console.log("route change complete OFF");
       });
     };
-  }, [router.events]);
+  }, [router.events, isLogged]);
 
   const drawer = (
     <div>
