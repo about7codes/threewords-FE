@@ -13,12 +13,12 @@ export const useLogin = () => {
   const router = useRouter();
   const [redirect, setRedirect] = useState(false);
 
-  useEffect(() => {
-    if (redirect) {
-      console.log("uLredirect to /all");
-      router.push("/all");
-    }
-  }, [redirect]);
+  // useEffect(() => {
+  //   if (redirect) {
+  //     console.log("uLredirect to /all");
+  //     router.push("/all");
+  //   }
+  // }, [redirect]);
 
   return useMutation(loginRequest, {
     onSuccess: (data) => {

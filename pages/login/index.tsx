@@ -64,11 +64,19 @@ const Login = () => {
     }
   }, [isLogged]);
 
-  const { mutate: login, isLoading, error } = useLogin();
+  const { mutateAsync: login, isLoading, error } = useLogin();
 
-  const handleSubmit = (values: IFormValues) => {
+  const handleSubmit = async (values: IFormValues) => {
     console.log(values);
-    login({ email: values.email, password: values.password });
+    const logRes = await login({
+      email: values.email,
+      password: values.password,
+    });
+    console.log("logRes: ", logRes);
+    if (logRes) {
+      console.log("Lredirect to /all");
+      router.push("/all");
+    }
   };
   const formikSchema = Yup.object().shape({
     email: Yup.string()
