@@ -59,7 +59,7 @@ const Login = () => {
   useEffect(() => {
     if (isLogged) {
       console.log("Lredirect to /all");
-      router.push("/all");
+      // router.push("/all");
       return;
     }
   }, [isLogged]);
