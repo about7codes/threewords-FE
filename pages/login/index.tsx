@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -22,9 +22,10 @@ import { useFormik, FormikProps } from "formik";
 import * as Yup from "yup";
 
 import { styles as classes } from "../../styles/login.styles";
-import { AppContext } from "../../context/app.context";
 import { useLogin } from "../../hooks/auth.hooks";
 import HeaderInfo from "../../components/HeaderInfo/HeaderInfo";
+import { useRouter } from "next/router";
+import { parseCookies } from "nookies";
 
 interface IFormValues {
   email: string;
@@ -32,11 +33,38 @@ interface IFormValues {
 }
 
 const Login = () => {
+  const router = useRouter();
+  const [isLogged, setIsLogged] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [, dispatch] = useContext<any>(AppContext);
+
+  useEffect(() => {
+    router.events.on("routeChangeComplete", () => {
+      console.log("Lroute change complete ON");
+
+      const authToken = parseCookies().aToken;
+      if (!authToken) {
+        return setIsLogged(false);
+      }
+      setIsLogged(true);
+    });
+    console.log("LisLogged: ", isLogged);
+
+    return () => {
+      router.events.off("routeChangeComplete", () => {
+        console.log("Lroute change complete OFF");
+      });
+    };
+  }, [router.events]);
+
+  useEffect(() => {
+    if (isLogged) {
+      console.log("Lredirect to /all");
+      router.push("/all");
+      return;
+    }
+  }, [isLogged]);
 
   const { mutate: login, isLoading, error } = useLogin();
-  console.log("Error2: ", error?.response?.data);
 
   const handleSubmit = (values: IFormValues) => {
     console.log(values);
