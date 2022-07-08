@@ -16,7 +16,7 @@ const AppInfo = () => {
         </Typography>
         <h2>FrontEnd Code</h2>
         <Typography variant="body1" sx={classes.aboutLinks}>
-          <Link href="https://github.com/about7codes/threewords-BE">
+          <Link href="https://github.com/about7codes/threewords-FE">
             https://github.com/about7codes/threewords-FE
           </Link>
         </Typography>
