@@ -1,16 +1,13 @@
 import { AxiosError } from "axios";
-import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 
-import { useApp, useCheckMobile } from "./app.hooks";
+import { useApp } from "./app.hooks";
 import { loginRequest, signupRequest } from "../api/auth.api";
 import { setCookie } from "nookies";
 
 // Login User with react-query
 export const useLogin = () => {
-  const router = useRouter();
   const [, dispatch] = useApp();
-  const isMobile = useCheckMobile();
 
   return useMutation(loginRequest, {
     onSuccess: (data) => {
@@ -32,11 +29,9 @@ export const useLogin = () => {
           open: true,
         },
       });
-      if (isMobile) {
-        window.location.href = "/all";
-        return;
-      }
-      router.push("/all");
+      window.location.href = "/all";
+      // issue with next router redirect
+      // router.push("/all");
     },
     onError: (error: AxiosError) => {
       console.log("Error1: ", error.response?.data);
@@ -55,19 +50,17 @@ export const useLogin = () => {
 
 // Signup User with react-query
 export const useSignup = () => {
-  const router = useRouter();
   const [, dispatch] = useApp();
-  const isMobile = useCheckMobile();
 
   return useMutation(signupRequest, {
     onSuccess: (data) => {
       console.log("success: ", data);
       setCookie(null, "aToken", data.authToken, {
-        maxAge: 60,
+        maxAge: 24 * 60 * 60 * 1000, // 24 hrs,
         path: "/",
       });
       setCookie(null, "rToken", data.refreshToken, {
-        maxAge: 60,
+        maxAge: 24 * 60 * 60 * 1000, // 24 hrs,
         path: "/",
       });
       dispatch({
@@ -79,11 +72,9 @@ export const useSignup = () => {
           open: true,
         },
       });
-      if (isMobile) {
-        window.location.href = "/all";
-        return;
-      }
-      router.push("/all");
+      window.location.href = "/all";
+      // issue with next router redirect
+      // router.push("/all");
     },
     onError: (error: AxiosError) => {
       console.log("Error1: ", error.response?.data);
