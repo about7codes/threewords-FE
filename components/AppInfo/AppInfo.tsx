@@ -14,6 +14,13 @@ const AppInfo = () => {
           Context, and Material-UI and Node JS. You can add phrases to your
           list, and then view your list of phrases with others.
         </Typography>
+        <h2>Demo Account</h2>
+        <Typography variant="body1">
+          Email: <strong>xyz@gmail.com</strong>
+        </Typography>
+        <Typography variant="body1">
+          Pass: <strong>abc123456</strong>
+        </Typography>
         <h2>FrontEnd Code</h2>
         <Typography variant="body1" sx={classes.aboutLinks}>
           <Link href="https://github.com/about7codes/threewords-FE">
