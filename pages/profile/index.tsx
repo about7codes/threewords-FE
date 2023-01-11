@@ -18,7 +18,7 @@ import { styles as classes } from "../../styles/profile.styles";
 
 // Fetch user profile from the database
 export const getProfile = async (token: string) => {
-  const response = await axios.get("https://maxthree.herokuapp.com/auth/me", {
+  const response = await axios.get("https://maxthree.cyclic.app/auth/me", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

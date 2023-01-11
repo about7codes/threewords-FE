@@ -2,14 +2,11 @@ import axios from "axios";
 
 // Fetch all phrases from the database
 export const getAllPhrases = async (token: string) => {
-  const response = await axios.get(
-    "https://maxthree.herokuapp.com/phrase/all",
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await axios.get("https://maxthree.cyclic.app/phrase/all", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 
@@ -24,7 +21,7 @@ export const updatePhrase = async ({
   words: string;
 }) => {
   const response = await axios.patch(
-    `https://maxthree.herokuapp.com/phrase/update/${id}`,
+    `https://maxthree.cyclic.app/phrase/update/${id}`,
     { words },
     {
       headers: {
@@ -44,7 +41,7 @@ export const deletePhrase = async ({
   id: string;
 }) => {
   const response = await axios.delete(
-    `https://maxthree.herokuapp.com/phrase/delete/${id}`,
+    `https://maxthree.cyclic.app/phrase/delete/${id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -32,7 +32,7 @@ export const addPhrase = async ({
   words: string;
 }) => {
   const response = await axios.post(
-    "https://maxthree.herokuapp.com/phrase/new",
+    "https://maxthree.cyclic.app/phrase/new",
     { words },
     {
       headers: {

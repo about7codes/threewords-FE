@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// https://maxthree.cyclic.app
 // https://maxthree.herokuapp.com
 // http://localhost:8000
 
@@ -11,10 +12,10 @@ export const loginRequest = async ({
   email: string;
   password: string;
 }) => {
-  const response = await axios.post(
-    "https://maxthree.herokuapp.com/auth/signin",
-    { email, password }
-  );
+  const response = await axios.post("https://maxthree.cyclic.app/auth/signin", {
+    email,
+    password,
+  });
   // Cookies.set("aToken", response.data.authToken);
   // Cookies.set("rToken", response.data.refreshToken);
   // console.log(response);
@@ -29,10 +30,10 @@ export const signupRequest = async ({
   email: string;
   password: string;
 }) => {
-  const response = await axios.post(
-    "https://maxthree.herokuapp.com/auth/signup",
-    { email, password }
-  );
+  const response = await axios.post("https://maxthree.cyclic.app/auth/signup", {
+    email,
+    password,
+  });
   // Cookies.set("aToken", response.data.authToken);
   // Cookies.set("rToken", response.data.refreshToken);
   // console.log(response);
