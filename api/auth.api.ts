@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// https://threewords-be.onrender.com
 // https://maxthree.cyclic.app
 // https://maxthree.herokuapp.com
 // http://localhost:8000
@@ -12,7 +13,7 @@ export const loginRequest = async ({
   email: string;
   password: string;
 }) => {
-  const response = await axios.post("https://maxthree.cyclic.app/auth/signin", {
+  const response = await axios.post("https://threewords-be.onrender.com/auth/signin", {
     email,
     password,
   });
@@ -30,7 +31,7 @@ export const signupRequest = async ({
   email: string;
   password: string;
 }) => {
-  const response = await axios.post("https://maxthree.cyclic.app/auth/signup", {
+  const response = await axios.post("https://threewords-be.onrender.com/auth/signup", {
     email,
     password,
   });

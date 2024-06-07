@@ -32,7 +32,7 @@ export const addPhrase = async ({
   words: string;
 }) => {
   const response = await axios.post(
-    "https://maxthree.cyclic.app/phrase/new",
+    "https://threewords-be.onrender.com/phrase/new",
     { words },
     {
       headers: {

@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Fetch all phrases from the database
 export const getAllPhrases = async (token: string) => {
-  const response = await axios.get("https://maxthree.cyclic.app/phrase/all", {
+  const response = await axios.get("https://threewords-be.onrender.com/phrase/all", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -21,7 +21,7 @@ export const updatePhrase = async ({
   words: string;
 }) => {
   const response = await axios.patch(
-    `https://maxthree.cyclic.app/phrase/update/${id}`,
+    `https://threewords-be.onrender.com/phrase/update/${id}`,
     { words },
     {
       headers: {
@@ -41,7 +41,7 @@ export const deletePhrase = async ({
   id: string;
 }) => {
   const response = await axios.delete(
-    `https://maxthree.cyclic.app/phrase/delete/${id}`,
+    `https://threewords-be.onrender.com/phrase/delete/${id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
